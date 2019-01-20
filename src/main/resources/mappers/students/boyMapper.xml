@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bin.students.dao.boyMapper">
+  <resultMap id="BaseResultMap" type="com.bin.students.entity.boy">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="档案号" jdbcType="VARCHAR" property="档案号" />
+    <result column="学籍号" jdbcType="VARCHAR" property="学籍号" />
+    <result column=" 姓名" jdbcType="VARCHAR" property="姓名" />
+    <result column="K性别" jdbcType="VARCHAR" property="k性别" />
+    <result column="M语文" jdbcType="VARCHAR" property="m语文" />
+    <result column="M数学" jdbcType="VARCHAR" property="m数学" />
+    <result column="M英语" jdbcType="VARCHAR" property="m英语" />
+    <result column="M总成绩" jdbcType="VARCHAR" property="m总成绩" />
+    <result column="是否注册" jdbcType="VARCHAR" property="是否注册" />
+    <result column="K村居" jdbcType="VARCHAR" property="k村居" />
+    <result column="班级" jdbcType="INTEGER" property="班级" />
+  </resultMap>
+  
+  <select id="getToTalAve" resultType="map">
+    SELECT AVG(M总成绩) AS totalave,AVG(M语文) AS Cave,AVG(M数学) AS Mave,AVG(M英语) AS Eave FROM boy
+  </select>
+
+  <select id="getNum" parameterType="Map" resultType="Integer">
+    SELECT count(*) AS totalNum FROM boy WHERE CAST(M总成绩 as DECIMAL)  &gt;= #{low} AND CAST(M总成绩 as DECIMAL)  &lt;= #{high}
+    union all
+    SELECT count(*) AS ChineseNum FROM boy WHERE CAST(M语文 as DECIMAL)  &gt;= #{low} AND CAST(M语文 as DECIMAL)  &lt;= #{high}
+    union all
+    SELECT count(*) AS MathNum FROM boy WHERE CAST(M数学 as DECIMAL)  &gt;= #{low} AND CAST(M数学 as DECIMAL)  &lt;= #{high}
+    union all
+    SELECT count(*) AS EnglishNum FROM boy WHERE CAST(M英语 as DECIMAL)  &gt;= #{low} AND CAST(M英语 as DECIMAL)  &lt;= #{high}
+  </select>
+
+  <select id="selectStudentsOrderBytotal" resultMap="BaseResultMap">
+    SELECT * FROM boy ORDER BY M总成绩
+  </select>
+</mapper>
